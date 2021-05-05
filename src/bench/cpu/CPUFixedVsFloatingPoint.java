@@ -23,6 +23,7 @@ public class CPUFixedVsFloatingPoint implements IBenchmark {
 	@Override
 	@Deprecated	
 	public void run() {
+
 	}
 
 	@Override
