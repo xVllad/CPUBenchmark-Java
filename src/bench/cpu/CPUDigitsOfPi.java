@@ -7,7 +7,7 @@ import java.math.RoundingMode;
 
 public class CPUDigitsOfPi implements IBenchmark {
     private int digits;
-    private int result;
+    //private int result;
     public void initialize(Object ... params) {
 
         this.digits = (Integer)params[0];
@@ -33,7 +33,7 @@ public class CPUDigitsOfPi implements IBenchmark {
                 computePiMagically(digits);
                 break;
             case 1:
-                //computePiByGuessing();
+                approxPi(digits);
                 break;
             case 2:
                 //computePiSil();
@@ -50,38 +50,34 @@ public class CPUDigitsOfPi implements IBenchmark {
     public void clean() {
     }
 
-    @Override
-    public String getResult() {
-
-        return "Pi : " + pi;
-    }
-
     private BigDecimal pi;
 
     private void computePiMagically(int digits)
     {
         BigDecimal a = new BigDecimal(1);
         BigDecimal b = new BigDecimal(1/Math.sqrt(2));
-        BigDecimal t = new BigDecimal(0.25);
+        BigDecimal t = new BigDecimal(1/4.0);
         BigDecimal x = new BigDecimal(1);
         BigDecimal y = new BigDecimal(0);
         BigDecimal two = new BigDecimal(2);
+
 
         for(int i=0;i<digits;++i)
         {
             y = a;
             a = a.add(b);
-            a = a.divide(two,digits, BigDecimal.ROUND_FLOOR);
+            a = a.divide(two,digits,RoundingMode.FLOOR);
             b = b.multiply(y);
             b = sqrt(b,digits);
-            t = t.subtract((y.subtract(x)).multiply(y.subtract(x)).multiply(x));
+            t = t.subtract((y.subtract(a)).multiply(y.subtract(a)).multiply(x));
             x = x.multiply(two);
         }
-        pi = (a.add(b).multiply(a.add(b))).divide(t.multiply(new BigDecimal(4)),digits,BigDecimal.ROUND_FLOOR);
+
+        pi = ((a.add(b)).multiply(a.add(b))).divide(t.multiply(new BigDecimal(4)),digits,RoundingMode.FLOOR);
+
     }
 
-    private static final BigDecimal SQRT_DIG = new BigDecimal(130);
-    private static final BigDecimal SQRT_PSE = new BigDecimal(10).pow(SQRT_DIG.intValue());
+    private static final BigDecimal SQRT_DIG = new BigDecimal(250);
 
     private BigDecimal sqrtN(BigDecimal c,BigDecimal xn, BigDecimal pr)
     {
@@ -116,20 +112,53 @@ public class CPUDigitsOfPi implements IBenchmark {
         return x1;
     }
 
-    private void getPiSlicer(long n)
-    {
-        long hits = 0;
-        for(long i=0;i<n;++i)
-        {
-            for(long j = 0;j<n;++j)
-            {
-                if(i * i +j * j <= n * n)
-                {
-                    hits++;
-                }
-            }
+
+    double p2;
+    private void approxPi(int i) {
+        double a = 1;           //The initial conditions for the iteration
+        double b = 1 / Math.sqrt(2);
+        double t = 1/4.0;
+        double p = 1;
+        double a1 = 0;          //The internal n+1 terms for the iteration
+        double b1 = 0;
+        double t1 = 0;
+        double p1 = 0;
+        while (i > 0) {
+            a1 = (a + b) / 2;
+            b1 = sqrt2(a*b,i);
+            t1 = t - p*(a - a1)*(a - a1);
+            p1 = 2*p;
+            a = a1;
+            b = b1;
+            t = t1;
+            p = p1;
+            i = i - 1;
         }
-        pi = new BigDecimal(4.0 * hits / (n * n));
+        p2 = ((a + b)*(a + b))/(4*t);
+        //return applepie;
+    }
+
+    private double sqrt2(double a,int dig)
+    {
+        double x0 = 0;
+        double x1 = Math.sqrt(a);
+        double TWO = 2;
+
+        while(TWO == x1)
+        {
+            x0 = x1;
+            x1 = a/x0;
+            x1 = x1+x0;
+            x1 = x1/TWO;
+        }
+
+        return x1;
+    }
+
+    @Override
+    public String getResult() {
+
+        return "Pi : " + pi;
     }
 
 }

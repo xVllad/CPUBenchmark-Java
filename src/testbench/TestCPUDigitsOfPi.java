@@ -13,8 +13,8 @@ public class TestCPUDigitsOfPi {
         ILog log = new ConsoleLogger();
         TimeUnit timeUnit = TimeUnit.Milli;
         IBenchmark bench = new CPUDigitsOfPi();
-        bench.initialize(10);
-
+        bench.initialize(4);
+        bench.warmUp();
         timer.start();
         bench.run();
         long time = timer.stop();
