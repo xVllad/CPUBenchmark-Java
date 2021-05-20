@@ -15,13 +15,13 @@ public class CPUDigitsOfPi implements IBenchmark {
 
     @Override
     public void warmUp() {
-        computePiMagically(3000);
+        GaussinComputationOfPi(3000);
     }
 
     @Override
     @Deprecated
     public void run() {
-        computePiMagically(digits);
+        GaussinComputationOfPi(digits);
     }
 
     @Override
@@ -30,14 +30,10 @@ public class CPUDigitsOfPi implements IBenchmark {
         switch (option)
         {
             case 0:
-                computePiMagically(digits);
+                GaussinComputationOfPi(digits);
                 break;
-            case 1:
-                approxPi(digits);
-                break;
-            case 2:
-                //computePiSil();
-                break;
+            default:
+
         }
     }
 
@@ -52,7 +48,7 @@ public class CPUDigitsOfPi implements IBenchmark {
 
     private BigDecimal pi;
 
-    private void computePiMagically(int digits)
+    private void GaussinComputationOfPi(int digits)
     {
         BigDecimal a = new BigDecimal(1);
         BigDecimal b = new BigDecimal(1/Math.sqrt(2));
@@ -111,50 +107,6 @@ public class CPUDigitsOfPi implements IBenchmark {
 
         return x1;
     }
-
-
-    double p2;
-    private void approxPi(int i) {
-        double a = 1;           //The initial conditions for the iteration
-        double b = 1 / Math.sqrt(2);
-        double t = 1/4.0;
-        double p = 1;
-        double a1 = 0;          //The internal n+1 terms for the iteration
-        double b1 = 0;
-        double t1 = 0;
-        double p1 = 0;
-        while (i > 0) {
-            a1 = (a + b) / 2;
-            b1 = sqrt2(a*b,i);
-            t1 = t - p*(a - a1)*(a - a1);
-            p1 = 2*p;
-            a = a1;
-            b = b1;
-            t = t1;
-            p = p1;
-            i = i - 1;
-        }
-        p2 = ((a + b)*(a + b))/(4*t);
-        //return applepie;
-    }
-
-    private double sqrt2(double a,int dig)
-    {
-        double x0 = 0;
-        double x1 = Math.sqrt(a);
-        double TWO = 2;
-
-        while(TWO == x1)
-        {
-            x0 = x1;
-            x1 = a/x0;
-            x1 = x1+x0;
-            x1 = x1/TWO;
-        }
-
-        return x1;
-    }
-
     @Override
     public String getResult() {
 

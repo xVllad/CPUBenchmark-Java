@@ -13,13 +13,15 @@ public class TestCPUDigitsOfPi {
         ILog log = new ConsoleLogger();
         TimeUnit timeUnit = TimeUnit.Milli;
         IBenchmark bench = new CPUDigitsOfPi();
-        bench.initialize(4);
-        bench.warmUp();
-        timer.start();
-        bench.run();
-        long time = timer.stop();
-        log.writeTime("Finished in",time,timeUnit);
-        log.write(bench.getResult());
+        bench.initialize(1000);
+        for(int i=0;i<10;++i) {
+            bench.warmUp();
+            timer.start();
+            bench.run();
+            long time = timer.stop();
+            log.writeTime("Finished in", time, timeUnit);
+            log.write(bench.getResult());
+        }
 
         bench.clean();
         log.close();
