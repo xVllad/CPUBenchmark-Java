@@ -32,7 +32,7 @@ public interface IBenchmark {
      * was called. <br>
      * This call should be benchmarked.
      *
-     * @param option May pass a benchmark option defined by the benchmark class
+     * @param options May pass a benchmark option defined by the benchmark class
      *               itself
      */
     public void run(Object... options);
@@ -56,4 +56,6 @@ public interface IBenchmark {
      * @return
      */
     public String getResult();
+
+    //hi
 }
