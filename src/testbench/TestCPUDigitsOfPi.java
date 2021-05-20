@@ -1,4 +1,5 @@
 package testbench;
+
 import bench.IBenchmark;
 import bench.cpu.CPUDigitsOfPi;
 import javafx.application.Application;
